@@ -14,7 +14,7 @@ def home():
 
 @app.route("/36Team_ToyProject", methods=["POST"])
 def homework_post():
-    name_receive = request.form['sample_give']
+    sample_receive = request.form['sample_give']
     return jsonify({'msg':'POST 완료!'})
 
 
