@@ -1,12 +1,39 @@
 /* hello css */
-.code_block\"{
+.code_block\" {
     border: 1px solid black;
     padding: 5px;
     margin-top: 10px;
 }
 
-#code_comment{
+#code_comment {
     margin-top: 10px;
 }
 
 
+* {
+    font-family: 'Gowun Dodum', sans-serif;
+}
+
+.mypost {
+    max-width: 1200px;
+    width: 95%;
+
+    margin: 20px auto 0px auto;
+
+    box-shadow: 0px 0px 3px 0px gray;
+    padding: 20px;
+}
+
+.mypost > button {
+    margin-top: 10px;
+}
+
+.mycards > .card {
+    max-width: 1200px;
+    width: 95%;
+
+    margin: 20px auto 0px auto;
+
+    margin-top: 20px;
+    margin-bottom: 20px;
+}

@@ -6,8 +6,8 @@
     });
 
     function review_code() {
-        code = $('#mycode').val()
-        quest = $('#myquest').val()
+        let code = $('#mycode').val()
+        let quest = $('#myquest').val()
         $.ajax({
             type: 'POST',
             url: '/templates/code_review',

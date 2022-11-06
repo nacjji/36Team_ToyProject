@@ -16,11 +16,10 @@ def home():
 # 자유게시판
 @app.route('/free_board')
 def free_board():
-    comment_receive = request.form['free_board_give']
     return render_template('/free_board.html')
 
 # 자유게시판 포스트
-@app.route('/templates/free_board_review', methods=['POST'])
+@app.route('/templates/free_board', methods=['POST'])
 def free_board_post():
     comment_receive = request.form['comment_give']
     doc = {
