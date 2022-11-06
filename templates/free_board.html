@@ -51,7 +51,7 @@
                 url: "/templates/free_board",
                 data: {'comment_give':comment},
                 success: function (response) {
-                    alert(response['msg'])
+                    console.log(response)
                 }
             })
         }
@@ -65,7 +65,7 @@
                       style="height: 100px"></textarea>
             <label for="floatingTextarea2">글 남기기</label>
         </div>
-        <button type="button" class="btn btn-dark">확인</button>
+        <button onclick="save_comment()" class="btn btn-dark">확인</button>
     </div>
     <div class="mycards">
         <div class="card">
