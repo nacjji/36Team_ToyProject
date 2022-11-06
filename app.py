@@ -46,8 +46,10 @@ def code_review():
 @app.route('/templates/code_review', methods=['POST'])
 def code_review_post():
     code_receive = request.form['code_give']
+    quest_receive = request.form['quest_give']
     doc = {
-        'code': code_receive
+        'code': code_receive,
+        'quest':quest_receive
     }
     db.develco_code.insert_one(doc)
 
