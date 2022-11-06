@@ -7,11 +7,13 @@
 
     function review_code() {
         code = $('#mycode').val()
+        quest = $('#myquest').val()
         $.ajax({
             type: 'POST',
             url: '/templates/code_review',
             data: {
                 code_give: code,
+                quest_give: quest
             },
             success: function (response) {
                 window.location.reload()
@@ -30,10 +32,13 @@
                 let rows = response['codes']
                 for (let i = 0; rows.length; i++) {
                     let code = rows[i]['code']
-                    let temp_html = `
-
+                    let quest = rows[i]['quest']
+                    let temp_html_posted = `
 <div class= code_block" >
     <pre>${code}</pre>
+</div>
+<div class="quest_block">
+    <p>${quest}</p>
 </div>
 <!--댓글 작성하면 댓글들 GET 보여주기 -->
 <div class="input-group mb-3" id="code_comment">
@@ -42,7 +47,8 @@
     <button class="btn btn-outline-secondary" type="button">댓글작성</button>
 </div>`
 
-                    $(`#my_code`).append(temp_html)
+                    $(`#my_code`).append(temp_html_posted)
+
                 }
             }
         });
@@ -50,16 +56,28 @@
 </script>
 
 <div class="container coderev mt-5">
-    <div class="form-floating">
-        <textarea class="form-control" id="mycode" placeholder="Leave a comment here"
-                  style="height: 100px"></textarea>
-        <label for="floatingTextarea2">코드 입력</label>
+        <div class="form-floating">
+            <textarea class="form-control" id="mycode" placeholder="Leave a comment here"
+                      style="height: 100px"></textarea>
+            <label for="floatingTextarea2">코드 입력</label>
+        </div>
+        <div class="form-floating">
+            <textarea class="form-control" id="myquest" placeholder="Leave a comment here"
+                      style="height: 100px"></textarea>
+            <label for="floatingTextarea2">질문 입력</label>
+        </div>
         <button onclick="review_code()" class="btn btn-dark mt-2">올리기</button>
     </div>
     <div id="posted_code" class="container">
             <code id="my_code">
             </code>
+            <div id="quest_comment">
+
+            </div>
     </div>
+<!--    <div id="quest_comment" class="container">-->
+
+<!--    </div>-->
 
     <div class="mt-3">
         <!--댓글달기-->
