@@ -14,14 +14,14 @@ def home():
     return render_template('index.html')
 
 # 자유게시판
-@app.route('/templates/free_board')
+@app.route('/free_board')
 def free_board():
-    return render_template('free_board.html')
+    return render_template('/free_board.html')
 
 # 코드리뷰 페이지로 이동
-@app.route('/templates/code_review')
+@app.route('/code_review')
 def code_review():
-    return render_template('code_review.html')
+    return render_template('/code_review.html')
 
 
 # 코드 포스트
