@@ -14,9 +14,9 @@ def home():
     return render_template('index.html')
 
 # 자유게시판
-# @app.route('/templates/free_board')
-# def free_board():
-#     return render_template('free_board.html')
+@app.route('/templates/free_board')
+def free_board():
+    return render_template('free_board.html')
 
 # 코드리뷰 페이지로 이동
 @app.route('/templates/code_review')
