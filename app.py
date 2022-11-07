@@ -1,11 +1,8 @@
 from flask import Flask, render_template, request, jsonify
 from pymongo import MongoClient
-import certifi
-
 
 app = Flask(__name__)
-ca = certifi.where()
-client = MongoClient('mongodb+srv://test:123@cluster0.vpw4dwu.mongodb.net/?retryWrites=true&w=majority', tlsCAFile=ca)
+client = MongoClient('mongodb+srv://test:123@cluster0.vpw4dwu.mongodb.net/?retryWrites=true&w=majority')
 db = client.dbsparta
 
 # 메인 페이지 로드
@@ -64,8 +61,22 @@ def code_get():
 
     return jsonify({'codes':code_list})
 
+# 중고거래 페이지로 이동
+@app.route('/trading')
+def trading():
+    return render_template('/trading.html')
 
+# 중고거래 포스트
+@app.route('/templates/trading', methods=['POST'])
+def trading_post():
 
+    return jsonify({'msg':'업로드 완료!'})
+
+# 중고거래 보여주기
+@app.route('/36Team_ToyProject',methods=["GET"])
+def trading_get():
+
+    return jsonify({'msg':'GET 연결 완료!'})
 
 # @app.route("/36Team_ToyProject", methods=["GET"])
 # def homework_get():

@@ -1,0 +1,76 @@
+{%extends 'base.html'%}
+{%block container%}
+<style>
+    .form-floating {
+        margin-bottom: 10px;
+    }
+    .save-button {
+        margin-top: 10px;
+    }
+    .trading-box {
+        width: 95%;
+        max-width: 1200px;
+        margin: 20px auto 0px auto;
+        padding: 20px;
+        box-shadow: 0px 0px 3px 0px gray;
+    }
+</style>
+<script>
+    $(document).ready(function () {
+        show_trading()
+    });
+
+    function save_trading() {
+        $.ajax({
+            type: 'POST',
+            url: '/templates/code_review',
+            data: {},
+            success: function (response) {
+                window.location.reload()
+            }
+        })
+    }
+
+    function show_trading() {
+        $.ajax({
+            type: "GET",
+            url: "/36Team_ToyProject",
+            data: {},
+            success: function (response) {
+                console.log(response['msg'])
+                }
+            }
+        });
+    }
+</script>
+<div class="trading-box">
+    <div class="form-floating">
+        <textarea id="trading_post" class="form-control" placeholder="Leave a comment here"
+                  style="height: 100px"></textarea>
+        <label for="floatingTextarea2">거래 글 남기기</label>
+    </div>
+    <div class="input-group">
+          <input type="file" class="form-control" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" aria-label="Upload">
+          <button class="btn btn-outline-secondary" type="button" id="inputGroupFileAddon04">업로드</button>
+    </div>
+    <div class="save-button">
+        <button onclick="save_trading()" type="button" class="btn btn-dark">응원 남기기</button>
+    </div>
+</div>
+<div class="trading-box">
+    <div>
+        <p>거래 게시글</p>
+    </div>
+    <div class="comment-box">
+        <hr>
+        ↪댓글1<hr>
+        ↪댓글2<hr>
+    </div>
+    <div class="input-group mb-3" id="trading_comment">
+        <input type="text" class="form-control" placeholder="거래 댓글 달기" aria-label="Recipient's username"
+               aria-describedby="button-addon2">
+        <button class="btn btn-outline-secondary" type="button">댓글작성</button>
+    </div>
+</div>
+
+{% endblock %}
