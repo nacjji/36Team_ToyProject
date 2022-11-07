@@ -5,6 +5,7 @@
         show_codes()
     });
 
+
     function review_code() {
         let code = $('#mycode').val()
         let quest = $('#myquest').val()
@@ -31,59 +32,63 @@
 
                 let rows = response['codes']
                 for (let i = 0; rows.length; i++) {
-                    let code = rows[i]['code']
                     let quest = rows[i]['quest']
+                    let code = rows[i]['code']
                     let temp_html_posted = `
-<div class= code_block" >
-    <pre>${code}</pre>
-</div>
-<div class="quest_block">
-    <p>${quest}</p>
-</div>
-<!--댓글 작성하면 댓글들 GET 보여주기 -->
-<div class="input-group mb-3" id="code_comment">
-    <input type="text" class="form-control" placeholder="코드리뷰를 부탁드려요!" aria-label="Recipient's username"
-           aria-describedby="button-addon2">
-    <button class="btn btn-outline-secondary" type="button">댓글작성</button>
-</div>`
+                    <!--댓글 작성하면 댓글들 GET 보여주기 -->
+
+
+
+<!-- 처음부터 보이려면, <details open> -->
+<details>
+  <summary>${quest}</summary>
+  <pre><p><code>${code}</code></p></pre>
+</details>
+                    `
 
                     $(`#my_code`).append(temp_html_posted)
+
 
                 }
             }
         });
     }
+
+
 </script>
 
 <div class="container coderev mt-5">
-        <div class="form-floating">
+    <div class="form-floating">
             <textarea class="form-control" id="mycode" placeholder="Leave a comment here"
                       style="height: 100px"></textarea>
-            <label for="floatingTextarea2">코드 입력</label>
-        </div>
-        <div class="form-floating">
+        <label for="floatingTextarea2">코드 입력</label>
+    </div>
+    <div class="form-floating">
             <textarea class="form-control" id="myquest" placeholder="Leave a comment here"
                       style="height: 100px"></textarea>
-            <label for="floatingTextarea2">질문 입력</label>
-        </div>
-        <button onclick="review_code()" class="btn btn-dark mt-2">올리기</button>
+        <label for="floatingTextarea2">질문 입력</label>
     </div>
-    <div id="posted_code" class="container">
-            <code id="my_code">
-            </code>
-            <div id="quest_comment">
+    <button onclick="review_code()" class="btn btn-dark mt-2">올리기</button>
+</div>
+<div id="posted_code" class="container">
 
-            </div>
-    </div>
-<!--    <div id="quest_comment" class="container">-->
+    <div id="quest_comment">
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">코드질문</th>
+            </tr>
+            </thead>
+            <tbody id="my_code">
 
-<!--    </div>-->
 
-    <div class="mt-3">
-        <!--댓글달기-->
+            </tr>
+            </tbody>
+        </table>
 
     </div>
 </div>
 
 
 {% endblock %}
+

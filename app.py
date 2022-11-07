@@ -35,7 +35,7 @@ def free_board_post():
 def free_board_get():
     code_list = list(db.develco_code.find({}, {'_id': False}))
 
-    return jsonify({'codes':code_list})
+    return jsonify({'codes': code_list})
 
 
 # 코드리뷰 페이지로 이동
@@ -49,28 +49,27 @@ def code_review():
 def code_review_post():
     code_receive = request.form['code_give']
     quest_receive = request.form['quest_give']
+
     doc = {
         'code': code_receive,
-        'quest':quest_receive
+        'quest': quest_receive,
     }
     db.develco_code.insert_one(doc)
 
-    return jsonify({'msg':'업로드 완료!'})
+    return jsonify({'msg': '업로드 완료!'})
 
 # 코드 보여주기
-@app.route('/36Team_ToyProject',methods=["GET"])
+@app.route('/36Team_ToyProject', methods=["GET"])
 def code_get():
     code_list = list(db.develco_code.find({}, {'_id': False}))
 
-    return jsonify({'codes':code_list})
+    return jsonify({'codes': code_list})
 
 
 
 
-# @app.route("/36Team_ToyProject", methods=["GET"])
-# def homework_get():
-#
-#     return jsonify({'msg':'GET 완료!'})
+
+
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)
