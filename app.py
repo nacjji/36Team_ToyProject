@@ -1,8 +1,11 @@
 from flask import Flask, render_template, request, jsonify
 from pymongo import MongoClient
+import certifi
+
 
 app = Flask(__name__)
-client = MongoClient('mongodb+srv://test:123@cluster0.vpw4dwu.mongodb.net/?retryWrites=true&w=majority')
+ca = certifi.where()
+client = MongoClient('mongodb+srv://test:123@cluster0.vpw4dwu.mongodb.net/?retryWrites=true&w=majority', tlsCAFile=ca)
 db = client.dbsparta
 
 # 메인 페이지 로드
@@ -61,6 +64,9 @@ def code_get():
     code_list = list(db.develco_code.find({}, {'_id': False}))
 
     return jsonify({'codes': code_list})
+
+
+
 
 
 
