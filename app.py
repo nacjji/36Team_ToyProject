@@ -48,9 +48,6 @@ def code_get():
 
 
 
-
-
-
 # 코드리뷰 페이지로 이동
 @app.route('/code_review')
 def code_review():
@@ -60,19 +57,54 @@ def code_review():
 # 코드 포스트
 @app.route('/templates/code_review', methods=['POST'])
 def code_review_post():
+
+    code_list = list(db.develco_code.find({}, {'_id': False}))
+
     code_receive = request.form['code_give']
     quest_receive = request.form['quest_give']
+    count = len(code_list)+1
 
     doc = {
+        'num': count,
         'code': code_receive,
         'quest': quest_receive,
+
     }
     db.develco_code.insert_one(doc)
-
     return jsonify({'msg': '업로드 완료!'})
 
 
+# 댓글 작성 num 값 받아와서 작성하기
+@app.route('/code_review/code_post', methods=['POST'])
+def code_com_post():
+    code_list = list(db.code_comment.find({}, {'_id': False}))
+    comment_receive = request.form['code_com_give']
+    count = len(code_list)+1
 
+    doc = {
+        'num': count,
+        'com_code': comment_receive
+    }
+    db.code_comment.insert_one(doc)
+    return jsonify({'msg': '댓글작성 완료!'})
+
+
+#
+# # 코드리뷰 작성 댓글 지우기
+# @app.route('/templates/code_review',methods=["GET"])
+# def code_com_get():
+#     db.code_com.delete_one({'test': 'bobby'})
+#
+#     return jsonify({'codes': code_com_list})
+#
+#
+
+# 코드리뷰 작성 댓글 보여주기
+@app.route('/code_review/show_code',methods=["GET"])
+def code_com_get():
+    codCom_list = list(db.code_comment.find({}, {'_id': False}))
+
+    return jsonify({'com_code': codCom_list})
 
 
 

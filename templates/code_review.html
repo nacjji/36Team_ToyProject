@@ -3,45 +3,99 @@
 <script>
     $(document).ready(function () {
         show_codes()
+        code_get()
     });
+
+    // 코드 get 보여주기
+    function code_get() {
+        $.ajax({
+            type: "GET",
+            url: '/code_review/show_code',
+            data: {},
+            success: function (response) {
+
+                let rows = response['com_code']
+                for (let i = 0; i < rows.length; i++) {
+                    let posted_code = rows[i]['com_code']
+
+                    let code_posted_html = `>> ${posted_code} <br>`
+                    $(`#show_codes`).append(code_posted_html)
+
+                }
+            }
+        })
+    }
 
 
     function show_codes() {
         $.ajax({
-            type: "GET",
-            url: '/templates/code_review',
-            data: {},
-            success: function (response) {
-                let rows = response['codes']
-                for (i = 0; i < rows.length; i++) {
-                    let quest = rows[i]['quest']
-                    let code = rows[i]['code']
-                    let temp_html_posted = `
+                type: "GET",
+                url: '/templates/code_review',
+                data: {},
+                success: function (response) {
 
+                    let rows = response['codes']
+                    for (let i = 0; i < rows.length; i++) {
+                        let quest = rows[i]['quest']
+                        let code = rows[i]['code']
+                        let com_code = rows[i]['com_code']
+                        let codNum = 0
+
+                        let temp_html_posted = `
                     <!--댓글 작성하면 댓글들 GET 보여주기 -->
-<details>
-  <summary>${quest}</summary>
-  <pre><p><code>${code}</code></p></pre>
-</details>
-                    `
+                            <details>
+                                <summary>${quest}</summary>
+                                <pre><p><code>${code}</code></p></pre>
+                            </details>
+                            <div class="input-group mb-3">
+                                <input id="codeCom"  type="text" class="form-control" placeholder="댓글을 달아주세요." aria-label="댓글을 달아주세요." aria-describedby="button-addon2">
+                                <button onclick="code_com()" class="btn btn-outline-secondary" type="button" id="button-addon2">작성</button>
+                            </div>
+                            <hr>
+                            <div id="show_codes">
 
-                    $(`#my_code`).append(temp_html_posted)
+                            </div>
+                            `
+                        $(`#my_code`).append(temp_html_posted)
 
 
+                    }
                 }
+
             }
-        });
+        )
+        ;
     }
+
+
+    // 댓글 포스트 전송
+    function code_com() {
+        let code_val = $('#codeCom').val()
+        $.ajax({
+            type: 'POST',
+            url: '/code_review/code_post',
+            data: {
+                code_com_give: code_val
+            },
+            success: function (response) {
+                window.location.reload()
+            }
+
+        })
+    }
+
 
     function review_code() {
         let code = $('#mycode').val()
         let quest = $('#myquest').val()
+
         $.ajax({
             type: 'POST',
             url: '/templates/code_review',
             data: {
                 code_give: code,
-                quest_give: quest
+                quest_give: quest,
+
             },
             success: function (response) {
                 window.location.reload()
@@ -75,11 +129,12 @@
             </tr>
             </thead>
             <tbody id="my_code">
-
-
             </tr>
             </tbody>
         </table>
+        <hr>
+        <div id="testcom_get">
+        </div>
 
     </div>
 </div>
