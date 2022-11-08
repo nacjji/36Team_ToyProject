@@ -34,14 +34,15 @@
     function show_trading() {
         $.ajax({
             type: "GET",
-            url: "/36Team_ToyProject",
+            url: "/templates/free_board",
             data: {},
             success: function (response) {
-                console.log(response['msg'])
-                }
+                console.log(response)
             }
-        });
+        })
     }
+
+
 </script>
 <div class="trading-box">
     <div class="form-floating">

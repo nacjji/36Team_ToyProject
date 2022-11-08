@@ -6,6 +6,33 @@
     });
 
 
+    function show_codes() {
+        $.ajax({
+            type: "GET",
+            url: '/templates/code_review',
+            data: {},
+            success: function (response) {
+                let rows = response['codes']
+                for (i = 0; i < rows.length; i++) {
+                    let quest = rows[i]['quest']
+                    let code = rows[i]['code']
+                    let temp_html_posted = `
+
+                    <!--댓글 작성하면 댓글들 GET 보여주기 -->
+<details>
+  <summary>${quest}</summary>
+  <pre><p><code>${code}</code></p></pre>
+</details>
+                    `
+
+                    $(`#my_code`).append(temp_html_posted)
+
+
+                }
+            }
+        });
+    }
+
     function review_code() {
         let code = $('#mycode').val()
         let quest = $('#myquest').val()
@@ -20,38 +47,6 @@
                 window.location.reload()
             }
         })
-    }
-
-
-    function show_codes() {
-        $.ajax({
-            type: "GET",
-            url: "/36Team_ToyProject",
-            data: {},
-            success: function (response) {
-
-                let rows = response['codes']
-                for (let i = 0; rows.length; i++) {
-                    let quest = rows[i]['quest']
-                    let code = rows[i]['code']
-                    let temp_html_posted = `
-                    <!--댓글 작성하면 댓글들 GET 보여주기 -->
-
-
-<hr><hr><hr><hr><hr><hr><hr><hr><hr><hr><hr>
-<!-- 처음부터 보이려면, <details open> -->
-<details>
-  <summary>${quest}</summary>
-  <pre><p><code>${code}</code></p></pre>
-</details>
-                    `
-
-                    $(`#my_code`).append(temp_html_posted)
-
-
-                }
-            }
-        });
     }
 
 
@@ -90,4 +85,4 @@
 </div>
 
 
-{% endblock %}
+{%endblock%}
