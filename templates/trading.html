@@ -21,25 +21,64 @@
     });
 
     function save_trading() {
+        let post = $('#trading_post').val()
+
         $.ajax({
             type: 'POST',
-            url: '/templates/code_review',
-            data: {},
+            url: '/templates/trading',
+            data: {post_give:post},
             success: function (response) {
+                alert(response['msg'])
                 window.location.reload()
             }
-        })
+        });
     }
 
     function show_trading() {
         $.ajax({
             type: "GET",
-            url: "/templates/free_board",
+            url: "/templates/trading",
             data: {},
             success: function (response) {
+                response = JSON.parse(response)
                 console.log(response)
+                let rows = response["trading_posts"]
+                for (i = 0; i < rows.length; i++) {
+                    let post_id = rows[i]['_id']['$oid']
+                    let post = rows[i]['post']
+                    let num = rows[i]['num']
+
+                    let temp_html = `<div class="trading-box">
+                                        <div>
+                                            <pre>${post}</pre>
+                                        </div>
+                                        <div class="comment-box">
+                                            <hr>
+                                            ↪${post_id}<hr>
+                                        </div>
+                                        <div class="input-group mb-3">
+                                            <textarea id="comment_post" class="form-control" placeholder="댓글을 남겨주세요"
+                                                      style="height: 80px"></textarea>
+                                            <button class="btn btn-outline-secondary" type="button" onclick="save_comment(${num})">댓글작성</button>
+                                        </div>
+                                    </div>`
+                    $('#show_post').append(temp_html)
+                }
             }
-        })
+        });
+    }
+    function save_comment(num) {
+        let comment = $('#comment_post').val()
+
+        $.ajax({
+            type: 'POST',
+            url: '/templates/trading_comment',
+            data: {comment_give: comment, num_give: num},
+            success: function (response) {
+                // alert(response['msg'])
+                // window.location.reload()
+            }
+        });
     }
 
 
@@ -55,23 +94,10 @@
           <button class="btn btn-outline-secondary" type="button" id="inputGroupFileAddon04">업로드</button>
     </div>
     <div class="save-button">
-        <button onclick="save_trading()" type="button" class="btn btn-dark">응원 남기기</button>
+        <button onclick="save_trading()" type="button" class="btn btn-dark">거래글 올리기</button>
     </div>
 </div>
-<div class="trading-box">
-    <div>
-        <p>거래 게시글</p>
-    </div>
-    <div class="comment-box">
-        <hr>
-        ↪댓글1<hr>
-        ↪댓글2<hr>
-    </div>
-    <div class="input-group mb-3" id="trading_comment">
-        <input type="text" class="form-control" placeholder="거래 댓글 달기" aria-label="Recipient's username"
-               aria-describedby="button-addon2">
-        <button class="btn btn-outline-secondary" type="button">댓글작성</button>
-    </div>
+<div id="show_post">
 </div>
 
 {% endblock %}
