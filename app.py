@@ -1,7 +1,10 @@
+import jwt as jwt
 from flask import Flask, render_template, request, jsonify
 from pymongo import MongoClient
 import certifi
-
+from bson.json_util import dumps
+import bcrypt
+import jwt
 
 app = Flask(__name__)
 ca = certifi.where()
@@ -12,6 +15,42 @@ db = client.dbsparta
 @app.route('/')
 def home():
     return render_template('index.html')
+# 로그인 창으로 이동
+# @app.route('/login')
+# def devel_login():
+#     return render_template('/login.html')
+#
+#
+# @bp.route('/login', methods=['POST'])
+# def login():
+#     credential = request.json
+#     email = credential['email']  # 요청한 이메일
+#     password = credential['password']  # 요청한 비밀번호
+#
+#     row = user.get_user_from_email(email)  # 이메일을 이용하여 실제 유저 정보를 가져옴
+#
+#     # 요청한 이메일의 유저 정보가 있는 경우, 비밀번호를 대조하여 확인
+#     if row and bcrypt.checkpw(password.encode('UTF-8'), row['hashed_password'].encode('UTF-8')):
+#         user_id = row['id']
+#         payload = {
+#             'user_id': user_id,  # user id
+#             'exp': datetime.utcnow() + timedelta(seconds=60 * 60 * 24)  # 만료 시간(24시간 후 )
+#         }
+#         # 비밀번호가 일치하는 경우 JWT 생성
+#         token = jwt.encode(payload, current_app.config['JWT_SECRET_KEY'], 'HS256')
+#
+#         return jsonify({
+#             'access_token': token.decode('UTF-8')
+#         })
+#     else:
+#         # 유저 정보가 없거나 비밀번호가 일치하지 않는 경우 401 코드 반환
+#         return '', 401
+
+
+
+
+
+
 
 
 # 자유게시판
@@ -89,15 +128,6 @@ def code_com_post():
     return jsonify({'msg': '댓글작성 완료!'})
 
 
-#
-# # 코드리뷰 작성 댓글 지우기
-# @app.route('/templates/code_review',methods=["GET"])
-# def code_com_get():
-#     db.code_com.delete_one({'test': 'bobby'})
-#
-#     return jsonify({'codes': code_com_list})
-#
-#
 
 # 코드리뷰 작성 댓글 보여주기
 @app.route('/code_review/show_code',methods=["GET"])
@@ -106,8 +136,14 @@ def code_com_get():
 
     return jsonify({'com_code': codCom_list})
 
-
-
+# 댓글 수정
+@app.route("/code_review/update", methods=["POST"])
+def update_code():
+    num_receive = request.form['num_give']
+    update_receive = request.form['update_give']
+    # mongoDB에서의 데이터는 숫자로 저장되는데 보내지는 데이터는 문자열로 보내지기 때문에 캐스팅을 해서 보냄
+    db.code_comment.update_one({'num': update_receive}, {'$set': {'com_code': update_receive}})
+    return jsonify({'msg': '댓글 수정 완료!!'})
 
 
 # 중고거래 페이지로 이동
@@ -118,14 +154,30 @@ def trading():
 # 중고거래 포스트
 @app.route('/templates/trading', methods=['POST'])
 def trading_post():
+    post_receive = request.form['post_give']
+    trading_list = list(db.develco_trading_post.find({}, {'_id': False}))
+    count = len(trading_list) + 1
 
-    return jsonify({'msg':'업로드 완료!'})
+    doc_post = {
+        'num':count,
+        'post':post_receive
+    }
+
+    db.develco_trading_post.insert_one(doc_post)
+
+    doc_comment = {
+        'post_id':list(db.develco_trading_post.find({'num':count},{'_id':True}))[0],
+        'comment': []
+    }
+    db.develco_trading_comment.insert_one(doc_comment)
+
+    return jsonify({'msg':'거래글 작성 완료!'})
 
 # 중고거래 보여주기
 @app.route('/templates/trading',methods=["GET"])
 def trading_get():
-
-    return jsonify({'msg':'GET 연결 완료!'})
+    trading_list = list(db.develco_trading_post.find({}))
+    return dumps({'trading_posts':trading_list})
 
 
 
