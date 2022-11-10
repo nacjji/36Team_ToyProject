@@ -40,26 +40,13 @@
             url: "/templates/trading",
             data: {},
             success: function (response) {
-                response = JSON.parse(response)
-                console.log(response)
                 let rows = response["trading_posts"]
                 for (i = 0; i < rows.length; i++) {
-                    let post_id = rows[i]['_id']['$oid']
                     let post = rows[i]['post']
-                    let num = rows[i]['num']
 
                     let temp_html = `<div class="trading-box">
                                         <div>
                                             <pre>${post}</pre>
-                                        </div>
-                                        <div class="comment-box">
-                                            <hr>
-                                            ↪${post_id}<hr>
-                                        </div>
-                                        <div class="input-group mb-3">
-                                            <textarea id="comment_post" class="form-control" placeholder="댓글을 남겨주세요"
-                                                      style="height: 80px"></textarea>
-                                            <button class="btn btn-outline-secondary" type="button" onclick="save_comment(${num})">댓글작성</button>
                                         </div>
                                     </div>`
                     $('#show_post').append(temp_html)
@@ -67,20 +54,6 @@
             }
         });
     }
-    function save_comment(num) {
-        let comment = $('#comment_post').val()
-
-        $.ajax({
-            type: 'POST',
-            url: '/templates/trading_comment',
-            data: {comment_give: comment, num_give: num},
-            success: function (response) {
-                // alert(response['msg'])
-                // window.location.reload()
-            }
-        });
-    }
-
 
 </script>
 <div class="trading-box">
@@ -88,10 +61,6 @@
         <textarea id="trading_post" class="form-control" placeholder="Leave a comment here"
                   style="height: 100px"></textarea>
         <label for="floatingTextarea2">거래 글 남기기</label>
-    </div>
-    <div class="input-group">
-          <input type="file" class="form-control" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" aria-label="Upload">
-          <button class="btn btn-outline-secondary" type="button" id="inputGroupFileAddon04">업로드</button>
     </div>
     <div class="save-button">
         <button onclick="save_trading()" type="button" class="btn btn-dark">거래글 올리기</button>

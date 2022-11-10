@@ -145,7 +145,6 @@ def update_code():
     db.code_comment.update_one({'num': update_receive}, {'$set': {'com_code': update_receive}})
     return jsonify({'msg': '댓글 수정 완료!!'})
 
-
 # 중고거래 페이지로 이동
 @app.route('/trading')
 def trading():
@@ -155,29 +154,18 @@ def trading():
 @app.route('/templates/trading', methods=['POST'])
 def trading_post():
     post_receive = request.form['post_give']
-    trading_list = list(db.develco_trading_post.find({}, {'_id': False}))
-    count = len(trading_list) + 1
 
-    doc_post = {
-        'num':count,
+    doc = {
         'post':post_receive
     }
-
-    db.develco_trading_post.insert_one(doc_post)
-
-    doc_comment = {
-        'post_id':list(db.develco_trading_post.find({'num':count},{'_id':True}))[0],
-        'comment': []
-    }
-    db.develco_trading_comment.insert_one(doc_comment)
-
+    db.develco_trading_post.insert_one(doc)
     return jsonify({'msg':'거래글 작성 완료!'})
 
 # 중고거래 보여주기
 @app.route('/templates/trading',methods=["GET"])
 def trading_get():
-    trading_list = list(db.develco_trading_post.find({}))
-    return dumps({'trading_posts':trading_list})
+    trading_list = list(db.develco_trading_post.find({},{'_id':False}))
+    return jsonify({'trading_posts':trading_list})
 
 
 
