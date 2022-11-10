@@ -62,29 +62,11 @@
                 for (let i = 0; i < rows.length; i++) {
                     let posted_code = rows[i]['com_code']
                     console.log(posted_code)
-                    let code_posted_html = `<div id="show_codes"><span>>> ${posted_code} <button onclick="comment_update()" class="btn btn-dark">댓글수정</button></span></div> <br><hr>`
+                    let code_posted_html = `<div id="show_codes"><span>>> ${posted_code}</span></div> <br><hr>`
 
                     comment_arr.push(code_posted_html)
                 }
                 $(`#testcom_get`).append(comment_arr)
-            }
-        })
-    }
-
-    // 위에 데이터 ---> 밑에 html
-
-    function comment_update(num) {
-        let upCode = prompt('댓글 수정')
-        $.ajax({
-            type: 'POST',
-            url: '/code_review/update',
-            data: {
-                num_give: num,
-                update_give: upCode
-            },
-            success: function (response) {
-                alert(response['msg'])
-                window.location.reload()
             }
         })
     }
@@ -120,7 +102,6 @@
                             `
 
                         $(`#my_code`).append(temp_html_posted)
-                        // $(`#testcom_get`).append(code_html)
                     }
                 }
 
