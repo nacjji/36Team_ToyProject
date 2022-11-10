@@ -15,43 +15,6 @@ db = client.dbsparta
 @app.route('/')
 def home():
     return render_template('index.html')
-# 로그인 창으로 이동
-# @app.route('/login')
-# def devel_login():
-#     return render_template('/login.html')
-#
-#
-# @bp.route('/login', methods=['POST'])
-# def login():
-#     credential = request.json
-#     email = credential['email']  # 요청한 이메일
-#     password = credential['password']  # 요청한 비밀번호
-#
-#     row = user.get_user_from_email(email)  # 이메일을 이용하여 실제 유저 정보를 가져옴
-#
-#     # 요청한 이메일의 유저 정보가 있는 경우, 비밀번호를 대조하여 확인
-#     if row and bcrypt.checkpw(password.encode('UTF-8'), row['hashed_password'].encode('UTF-8')):
-#         user_id = row['id']
-#         payload = {
-#             'user_id': user_id,  # user id
-#             'exp': datetime.utcnow() + timedelta(seconds=60 * 60 * 24)  # 만료 시간(24시간 후 )
-#         }
-#         # 비밀번호가 일치하는 경우 JWT 생성
-#         token = jwt.encode(payload, current_app.config['JWT_SECRET_KEY'], 'HS256')
-#
-#         return jsonify({
-#             'access_token': token.decode('UTF-8')
-#         })
-#     else:
-#         # 유저 정보가 없거나 비밀번호가 일치하지 않는 경우 401 코드 반환
-#         return '', 401
-
-
-
-
-
-
-
 
 # 자유게시판
 @app.route('/free_board')
